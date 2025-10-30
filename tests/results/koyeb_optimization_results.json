@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-05-24T19:22:00.358824",
+  "success_rate": 100.0,
+  "total_tests": 4,
+  "successful_tests": 4,
+  "optimizations_applied": [
+    "KeepAlive間隔短縮(3分)",
+    "ActivityService追加",
+    "通知チェック間隔短縮(3秒)",
+    "Koyeb無料プラン特化設定"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "summary": {
+    "total_tests": 6,
+    "successful_tests": 6,
+    "success_rate": 100.0,
+    "timestamp": "2025-05-24T04:07:35.109581"
+  },
+  "test_results": [
+    {
+      "test_name": "通知サービス + KeepAlive統合",
+      "success": true,
+      "details": "通知作成: True, KeepAlive: True, 削除: True",
+      "timestamp": "2025-05-24T04:07:23.059075"
+    },
+    {
+      "test_name": "通知CRUD操作",
+      "success": true,
+      "details": "作成: 3件, 読込: True, 個別削除: True, 全削除: True",
+      "timestamp": "2025-05-24T04:07:23.116191"
+    },
+    {
+      "test_name": "ID生成一意性",
+      "success": true,
+      "details": "生成ID数: 10, 一意ID数: 10, 全有効: True",
+      "timestamp": "2025-05-24T04:07:23.347206"
+    },
+    {
+      "test_name": "通知タイミング機能",
+      "success": true,
+      "details": "作成通知: 3, 取得通知: 3, チェック結果: OK",
+      "timestamp": "2025-05-24T04:07:23.392265"
+    },
+    {
+      "test_name": "サービス統合安定性",
+      "success": true,
+      "details": "並行操作: 10/10, 最終通知数: 5",
+      "timestamp": "2025-05-24T04:07:33.975750"
+    },
+    {
+      "test_name": "メモリとパフォーマンス",
+      "success": true,
+      "details": "作成時間: 1.10s, 削除時間: 0.01s, メモリ増加: 1.3MB",
+      "timestamp": "2025-05-24T04:07:35.109581"
+    }
+  ]
+}

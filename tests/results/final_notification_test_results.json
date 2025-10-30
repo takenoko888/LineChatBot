@@ -1,0 +1,107 @@
+[
+  {
+    "test_name": "ID生成一意性",
+    "success": false,
+    "message": "生成ID数: 5, 一意ID数: 5, 取得通知数: 7",
+    "details": {
+      "generated_ids": [
+        "n_20250524033515379_165",
+        "n_20250524033515490_496",
+        "n_20250524033515599_317",
+        "n_20250524033515708_149",
+        "n_20250524033515818_182"
+      ],
+      "unique_count": 5,
+      "retrieved_count": 7,
+      "all_unique": true
+    },
+    "timestamp": "2025-05-24T03:35:15.928498"
+  },
+  {
+    "test_name": "個別削除検証",
+    "success": true,
+    "message": "削除結果: True, メモリ削除: True, ファイル削除: True",
+    "details": {
+      "notification_id": "n_20250524033515929_213",
+      "delete_result": true,
+      "before_count": 1,
+      "after_count": 0,
+      "memory_deleted": true,
+      "file_deleted": true,
+      "before_file_has_user": true,
+      "after_file_has_user": false,
+      "before_file_has_notification": true,
+      "after_file_has_notification": false
+    },
+    "timestamp": "2025-05-24T03:35:15.948496"
+  },
+  {
+    "test_name": "一括削除検証",
+    "success": true,
+    "message": "削除報告: 3件, メモリクリア: True, ファイルクリア: True",
+    "details": {
+      "created_ids": [
+        "n_20250524033515949_745",
+        "n_20250524033516058_922",
+        "n_20250524033516167_588"
+      ],
+      "before_count": 3,
+      "after_count": 0,
+      "deleted_count": 3,
+      "memory_cleared": true,
+      "file_cleared": true,
+      "count_matches": true,
+      "before_file_has_user": true,
+      "after_file_has_user": false
+    },
+    "timestamp": "2025-05-24T03:35:16.288066"
+  },
+  {
+    "test_name": "並行操作テスト",
+    "success": false,
+    "message": "作成: 3件, 削除: 2件, 残存: 2件, エラー: 0件",
+    "details": {
+      "created_ids": [
+        "n_20250524033516288_822",
+        "n_20250524033516396_316",
+        "n_20250524033516507_590"
+      ],
+      "deleted_ids": [
+        "n_20250524033415",
+        "n_20250524033516288_822"
+      ],
+      "final_count": 2,
+      "expected_count": 1,
+      "errors": []
+    },
+    "timestamp": "2025-05-24T03:35:16.617010"
+  },
+  {
+    "test_name": "ファイル永続化検証",
+    "success": false,
+    "message": "データ一致: False, 削除成功: True, 削除永続化: False",
+    "details": {
+      "notification_id": "n_20250524033516618_165",
+      "loaded_count": 2,
+      "data_matches": false,
+      "delete_success": true,
+      "deletion_persisted": false,
+      "verify_count": 1
+    },
+    "timestamp": "2025-05-24T03:35:16.637316"
+  },
+  {
+    "test_name": "エッジケーステスト",
+    "success": true,
+    "message": "成功: 4/4",
+    "details": {
+      "passed_cases": 4,
+      "total_cases": 4,
+      "nonexistent_delete": true,
+      "nonexistent_bulk_delete": true,
+      "empty_creation_blocked": true,
+      "invalid_datetime_blocked": true
+    },
+    "timestamp": "2025-05-24T03:35:16.639447"
+  }
+]

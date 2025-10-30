@@ -1,0 +1,27 @@
+services:
+  geminowl:
+    build: .
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - LINE_ACCESS_TOKEN=${LINE_ACCESS_TOKEN}
+      - LINE_CHANNEL_SECRET=${LINE_CHANNEL_SECRET}
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - SEARCH_ENGINE_ID=${SEARCH_ENGINE_ID}
+      - WEATHER_API_KEY=${WEATHER_API_KEY}
+    volumes:
+      - .:/workspace
+      - notification_data:/workspace/data
+    ports:
+      - "8000:8000"
+    command: >
+      gunicorn 
+      --bind 0.0.0.0:8000 
+      --log-level debug 
+      --timeout 120 
+      --workers 1 
+      --threads 2 
+      app:app
+
+volumes:
+  notification_data:

@@ -1,0 +1,71 @@
+{
+  "persistence": {
+    "passed": 2,
+    "failed": 1,
+    "tests": [
+      {
+        "name": "multiple_storage_paths",
+        "status": "FAIL",
+        "message": "バックアップパスが設定されていない"
+      },
+      {
+        "name": "save_load_data",
+        "status": "PASS",
+        "message": "データ保存・読み込み正常: 通知ID=n_20250525025112013_769"
+      },
+      {
+        "name": "backup_restore",
+        "status": "PASS",
+        "message": "バックアップ・復元機能が実装済み"
+      }
+    ]
+  },
+  "keepalive": {
+    "passed": 2,
+    "failed": 0,
+    "tests": [
+      {
+        "name": "koyeb_detection",
+        "status": "PASS",
+        "message": "Koyeb環境検出正常: URL=https://test-app.koyeb.app, 間隔=45秒"
+      },
+      {
+        "name": "service_start",
+        "status": "PASS",
+        "message": "KeepAliveサービス開始・停止が正常"
+      }
+    ]
+  },
+  "notification": {
+    "passed": 2,
+    "failed": 0,
+    "tests": [
+      {
+        "name": "crud_operations",
+        "status": "PASS",
+        "message": "CRUD操作が正常"
+      },
+      {
+        "name": "repeat_notifications",
+        "status": "PASS",
+        "message": "繰り返し通知機能が正常"
+      }
+    ]
+  },
+  "config": {
+    "passed": 2,
+    "failed": 0,
+    "tests": [
+      {
+        "name": "koyeb_config",
+        "status": "PASS",
+        "message": "Koyeb設定が正常"
+      },
+      {
+        "name": "notification_interval",
+        "status": "PASS",
+        "message": "通知間隔設定が正常"
+      }
+    ]
+  }
+}

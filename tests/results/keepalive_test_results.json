@@ -1,0 +1,58 @@
+{
+  "summary": {
+    "total_tests": 7,
+    "successful_tests": 7,
+    "success_rate": 100.0,
+    "timestamp": "2025-05-24T04:04:02.500330"
+  },
+  "test_results": [
+    {
+      "test_name": "KeepAliveサービス初期化",
+      "success": true,
+      "details": "URL: http://localhost:5000, 間隔: 5分",
+      "timestamp": "2025-05-24T04:03:51.496387"
+    },
+    {
+      "test_name": "環境変数からの初期化",
+      "success": true,
+      "details": "検出URL: https://test.koyeb.app",
+      "timestamp": "2025-05-24T04:03:51.496387"
+    },
+    {
+      "test_name": "Koyeb環境検出",
+      "success": true,
+      "details": "検出結果: {'KOYEB_SERVICE_NAME': 'test-service', 'KOYEB_REGION': 'fra', 'PORT': '8080', 'AUTO_DETECTED_URL': 'https://test-service.koyeb.app'}",
+      "timestamp": "2025-05-24T04:03:51.497717"
+    },
+    {
+      "test_name": "スマート間隔計算",
+      "success": true,
+      "details": "昼間: 10分, 夜間: 30分",
+      "timestamp": "2025-05-24T04:03:51.497717"
+    },
+    {
+      "test_name": "Ping機能",
+      "success": true,
+      "details": "結果: {'success': True, 'response_time_ms': 1.004, 'timestamp': '2025-05-24T04:03:51.497717+09:00', 'url': 'http://httpbin.org/health'}",
+      "timestamp": "2025-05-24T04:03:51.498721"
+    },
+    {
+      "test_name": "サービスライフサイクル",
+      "success": true,
+      "details": "開始: True, 実行中: True, 停止: True",
+      "timestamp": "2025-05-24T04:04:02.500330"
+    },
+    {
+      "test_name": "設定変更",
+      "success": true,
+      "details": "間隔: True, スマート: True, 時間: True",
+      "timestamp": "2025-05-24T04:04:02.500330"
+    },
+    {
+      "test_name": "エラー処理",
+      "success": true,
+      "details": "無効間隔: True, 接続失敗: True",
+      "timestamp": "2025-05-24T04:04:02.500330"
+    }
+  ]
+}

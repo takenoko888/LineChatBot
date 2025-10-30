@@ -1,0 +1,288 @@
+﻿................................F............F....                       [100%]
+================================== FAILURES ===================================
+_________ TestMessageHandlerAutoTask.test_12_create_auto_task_intent __________
+
+self = <test_auto_task_system.TestMessageHandlerAutoTask testMethod=test_12_create_auto_task_intent>
+
+    def test_12_create_auto_task_intent(self):
+        """自動実行タスク作成意図処理テスト"""
+        print("\n🧪 テスト12: 自動実行タスク作成意図処理")
+    
+        # モックイベントの作成
+        mock_event = Mock()
+        mock_event.message = Mock()
+        mock_event.message.text = "毎日7時に天気を配信して"
+        mock_event.source.user_id = "test_user_011"
+    
+        # TextMessageタイプを正しく設定
+        from linebot.models import TextMessage
+        mock_event.message.__class__ = TextMessage
+    
+        # AI解析結果のモック
+        self.mock_gemini_service.analyze_text.return_value = {
+            'intent': 'create_auto_task',
+            'confidence': 0.9,
+            'auto_task': {
+                'task_type': 'weather_daily',
+                'title': '毎日の天気配信',
+                'description': '毎日7時に天気を配信',
+                'schedule_pattern': 'daily',
+                'schedule_time': '07:00',
+                'parameters': {'location': '東京'}
+            }
+        }
+    
+        # AutoTaskServiceのモック設定
+        self.mock_auto_task_service.create_auto_task.return_value = "task_12345"
+    
+        # メッセージを処理
+        response, quick_reply = self.handler.handle_message(
+            event=mock_event,
+            gemini_service=self.mock_gemini_service,
+            notification_service=self.mock_notification_service,
+            auto_task_service=self.mock_auto_task_service
+        )
+    
+        # 応答の確認
+>       self.assertIn("自動実行タスクを作成しました", response)
+E       AssertionError: '自動実行タスクを作成しました' not found in '🛠️ 設定に必要な情報が不足しています。\n・何時に配信しますか？（例: 8:00）\n・頻度は毎日/毎週/毎月のどれにしますか？'
+
+tests\specific\test_auto_task_system.py:498: AssertionError
+---------------------------- Captured stdout call -----------------------------
+✅ MessageHandler統合テスト準備完了
+
+🧪 テスト12: 自動実行タスク作成意図処理
+_____________________ test_search_to_notification_bridge ______________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000189EB317830>
+
+    def test_search_to_notification_bridge(monkeypatch):
+        from services.search_service import SearchService, SearchResult
+        from services.notification_service import NotificationService
+        from services.gemini_service import GeminiService
+        from handlers.message_handler import MessageHandler
+    
+        # 準備
+        gemini = GeminiService(api_key='test_key')
+        note = NotificationService(gemini_service=gemini)
+        handler = MessageHandler()
+    
+        # 検索モック
+        svc = SearchService(api_key='x', search_engine_id='y', gemini_service=gemini)
+        def mock_search(query, result_type='web', max_results=3, japan_only=True):
+            return [SearchResult(title='t', snippet='s', link='https://example.com')]
+        svc.search = mock_search
+    
+        class E: pass
+        class Src: pass
+        class Msg: pass
+        e = E(); e.source = Src(); e.source.user_id = 'U1'
+        e.message = Msg(); e.message.text = 'Python を検索'
+    
+        # 1) 検索実行
+        resp, _ = handler.handle_message(e, gemini, note, weather_service=None, search_service=svc, auto_task_service=None)
+        # 検索結果か、フォールバックのいずれか
+        assert ('検索結果' in resp) or ('要約' in resp) or (len(resp) > 0)
+    
+        # 2) ブリッジで通知
+        e.message.text = 'これを通知して'
+        resp2, _ = handler.handle_message(e, gemini, note, weather_service=None, search_service=svc, auto_task_service=None)
+>       assert '1分後に通知します' in resp2 or '自動配信を設定しました' in resp2
+E       AssertionError: assert ('1分後に通知します' in '❌ 直前の検索クエリが見つかりません。先に検索してください。' or '自動配信を設定しました' in '❌ 直前の検索クエリが見つかりません。先に検索してください。')
+
+tests\specific\test_search_to_notification.py:38: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    services.gemini_service:gemini_service.py:265 Function-Calling loop error: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+============================== warnings summary ===============================
+tests\conftest.py:12
+  C:\Users\tani5\Documents\sin_line_chat8-main\tests\conftest.py:12: PytestRemovedIn9Warning: The (path: py.path.local) argument is deprecated, please use (collection_path: pathlib.Path)
+  see https://docs.pytest.org/en/latest/deprecations.html#py-path-local-arguments-for-hooks-replaced-with-pathlib-path
+    def pytest_ignore_collect(path):
+
+tests/legacy/test_all_features_detailed.py::test_basic_commands
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_all_features_detailed.py::test_basic_commands returned <class 'list'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_all_features_detailed.py::test_notification_settings
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_all_features_detailed.py::test_notification_settings returned <class 'list'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_all_features_detailed.py::test_notification_deletion
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_all_features_detailed.py::test_notification_deletion returned <class 'list'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_all_features_detailed.py::test_weather_functionality
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_all_features_detailed.py::test_weather_functionality returned <class 'list'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_all_features_detailed.py::test_search_functionality
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_all_features_detailed.py::test_search_functionality returned <class 'list'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_all_features_detailed.py::test_smart_suggestion_functionality
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_all_features_detailed.py::test_smart_suggestion_functionality returned <class 'list'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_all_features_detailed.py::test_auto_task_functionality
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_all_features_detailed.py::test_auto_task_functionality returned <class 'list'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_all_features_detailed.py::test_conversation_history_functionality
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_all_features_detailed.py::test_conversation_history_functionality returned <class 'list'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_all_features_detailed.py::test_general_chat_functionality
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_all_features_detailed.py::test_general_chat_functionality returned <class 'list'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_auto_task_fix.py::test_gemini_auto_task_analysis
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_auto_task_fix.py::test_gemini_auto_task_analysis returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_auto_task_fix.py::test_auto_task_service
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_auto_task_fix.py::test_auto_task_service returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_auto_task_fix.py::test_message_handler_integration
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_auto_task_fix.py::test_message_handler_integration returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_minute_notification.py::test_minute_notification_patterns
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_minute_notification.py::test_minute_notification_patterns returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_minute_notification.py::test_notification_service_minute_integration
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_minute_notification.py::test_notification_service_minute_integration returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_minute_notification.py::test_specific_time_parsing
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_minute_notification.py::test_specific_time_parsing returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_notification_fix.py::test_gemini_service
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_notification_fix.py::test_gemini_service returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_notification_fix.py::test_search_service
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_notification_fix.py::test_search_service returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_notification_fix.py::test_notification_service
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_notification_fix.py::test_notification_service returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_notification_fix.py::test_message_handler
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_notification_fix.py::test_message_handler returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_notification_list_fix.py::test_notification_list
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_notification_list_fix.py::test_notification_list returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/legacy/test_notification_list_fix.py::test_gemini_safety_filter
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/legacy/test_notification_list_fix.py::test_gemini_safety_filter returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/specific/test_koyeb_optimization.py::test_keepalive_optimization
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/specific/test_koyeb_optimization.py::test_keepalive_optimization returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/specific/test_koyeb_optimization.py::test_activity_service
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/specific/test_koyeb_optimization.py::test_activity_service returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/specific/test_koyeb_optimization.py::test_notification_interval
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/specific/test_koyeb_optimization.py::test_notification_interval returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/specific/test_koyeb_optimization.py::test_app_endpoints
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/specific/test_koyeb_optimization.py::test_app_endpoints returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/specific/test_notification_flex_message.py::test_notification_flex_message_formatting
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/specific/test_notification_flex_message.py::test_notification_flex_message_formatting returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/specific/test_search_flex_message.py::test_search_flex_message_formatting
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/specific/test_search_flex_message.py::test_search_flex_message_formatting returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/specific/test_search_url_display.py::test_search_url_display_formatting
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/specific/test_search_url_display.py::test_search_url_display_formatting returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+tests/specific/test_weather_flex_message.py::test_weather_flex_message_formatting
+  C:\Users\tani5\AppData\Roaming\Python\Python312\site-packages\_pytest\python.py:161: PytestReturnNotNoneWarning: Test functions should return None, but tests/specific/test_weather_flex_message.py::test_weather_flex_message_formatting returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/specific/test_auto_task_system.py::TestMessageHandlerAutoTask::test_12_create_auto_task_intent
+FAILED tests/specific/test_search_to_notification.py::test_search_to_notification_bridge
+2 failed, 48 passed, 30 warnings in 484.93s (0:08:04)

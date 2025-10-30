@@ -1,0 +1,70 @@
+[
+  {
+    "test_name": "複数通知作成・取得",
+    "success": false,
+    "message": "作成: 3件, 取得: 1件",
+    "details": {
+      "created_ids": [
+        "n_20250524032040",
+        "n_20250524032040",
+        "n_20250524032040"
+      ],
+      "created_titles": [
+        "削除テスト通知1",
+        "削除テスト通知2",
+        "削除テスト通知3"
+      ],
+      "retrieved_titles": [
+        "削除テスト通知3"
+      ]
+    },
+    "timestamp": "2025-05-24T03:20:40.637484"
+  },
+  {
+    "test_name": "個別通知削除",
+    "success": false,
+    "message": "削除実行: True, 数変化: 1 -> 1, 対象削除: False",
+    "details": {
+      "target_id": "n_20250524032040",
+      "target_title": "削除テスト通知3",
+      "before_count": 1,
+      "after_count": 1,
+      "deleted_correctly": false
+    },
+    "timestamp": "2025-05-24T03:21:10.750984"
+  },
+  {
+    "test_name": "全通知削除",
+    "success": false,
+    "message": "削除報告: 1件, 削除前: 1件, 削除後: 1件",
+    "details": {
+      "before_count": 1,
+      "after_count": 1,
+      "deleted_count": 1,
+      "all_deleted": false,
+      "correct_count": true
+    },
+    "timestamp": "2025-05-24T03:21:40.857948"
+  },
+  {
+    "test_name": "ファイル保存確認",
+    "success": true,
+    "message": "ユーザー存在: True, 通知存在: True",
+    "details": {
+      "file_path": "C:\\Users\\tani5\\AppData\\Local\\Temp\\notification_delete_test_fh14xbmf\\test_notifications.json",
+      "user_id": "storage_test_user",
+      "notification_id": "n_20250524032140"
+    },
+    "timestamp": "2025-05-24T03:21:40.870540"
+  },
+  {
+    "test_name": "削除後ファイル確認",
+    "success": false,
+    "message": "削除成功: True, 通知残存: True",
+    "details": {
+      "delete_success": true,
+      "notification_removed": false
+    },
+    "timestamp": "2025-05-24T03:22:10.974485"
+  }
+]

@@ -1,0 +1,1 @@
+web: gunicorn app:app --log-file=- --log-level=debug --workers=1 --threads=4 --timeout=60 --worker-class=gthread --max-requests=1000 --max-requests-jitter=50

@@ -1,0 +1,48 @@
+{
+  "total_tests": 2,
+  "passed_tests": 2,
+  "success_rate": 100.0,
+  "overall_success": true,
+  "test_results": [
+    {
+      "test_name": "環境セットアップ",
+      "success": true,
+      "message": "テストディレクトリ: C:\\Users\\tani5\\AppData\\Local\\Temp\\deployment_persistence_test_yau639mp",
+      "details": {},
+      "timestamp": "2025-09-21T21:29:36.232899"
+    },
+    {
+      "test_name": "永続化ストレージ機能",
+      "success": true,
+      "message": "保存・読み込み・検証すべて成功",
+      "details": {
+        "saved_notifications": 1,
+        "loaded_notifications": 1,
+        "data_integrity": true
+      },
+      "timestamp": "2025-09-21T21:29:37.569957"
+    },
+    {
+      "test_name": "通知追加確認",
+      "success": true,
+      "message": "通知数: 1件",
+      "details": {
+        "notification_id": "n_20250921212937865_204",
+        "notification_count": 1
+      },
+      "timestamp": "2025-09-21T21:29:37.873161"
+    },
+    {
+      "test_name": "通知データ永続化",
+      "success": true,
+      "message": "復元後通知数: 1件",
+      "details": {
+        "before_count": 1,
+        "after_count": 1,
+        "title_match": "永続化テスト通知",
+        "id_match": "n_20250921212937865_204"
+      },
+      "timestamp": "2025-09-21T21:29:38.093435"
+    }
+  ]
+}
