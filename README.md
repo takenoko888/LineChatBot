@@ -4,8 +4,6 @@
 
 Google Gemini AIを活用した高機能LINEチャットボットアプリケーションです。自然言語処理、自動実行タスク、高度な通知管理、天気情報、検索機能など、豊富なAI機能を提供します。
 
-## 🏢 企業向けのご案内
-
 - **提供価値**
   - 顧客体験向上: 対話的UIと通知自動化で継続利用を促進
   - 業務効率化: 予約・リマインド・FAQの自動化による工数削減
@@ -26,8 +24,6 @@ Google Gemini AIを活用した高機能LINEチャットボットアプリケー
   - 最小導入: 通知/検索/天気の有効化と運用監視
   - 標準導入: LINE公式アカウント運用＋業務タスクの自動化
   - 拡張導入: DB/RAG連携やワークフローDAGによる業務プロセス自動化
-
-ご要望に応じて、要件定義/PoC/本番運用まで伴走可能です。
 
 ## 🌟 主要機能
 
@@ -80,12 +76,12 @@ Google Gemini AIを活用した高機能LINEチャットボットアプリケー
 ## 🏗️ プロジェクト構造
 
 ```
-sin_line_chat8-main/
+LineChatBot/
 ├── 📱 app.py                           # アプリケーションエントリーポイント
 ├── 📊 requirements.txt                 # 依存パッケージ
 ├── 🐳 docker-compose.yml / Dockerfile  # Docker設定
 ├── 📚 README.md                        # プロジェクト概要
-├── 📚 dynamic_feature_system_design.md  # 動的機能システム設計
+├── 📚 docs/design/dynamic_feature_system_design.md  # 動的機能システム設計
 │
 ├── 🧠 core/                           # コアシステム
 │   ├── line_bot_base.py               # LINE Bot基盤機能
@@ -98,8 +94,7 @@ sin_line_chat8-main/
 │
 ├── 🎯 handlers/                       # メッセージ処理
 │   ├── message_handler.py             # メインメッセージ処理
-│   ├── admin_handler.py               # 管理者機能処理
-│   └── dynamic_feature_handler.py     # 動的機能処理
+│   └── admin_handler.py               # 管理者機能処理
 │
 ├── 🚀 services/                       # 主要サービス
 │   ├── 🤖 gemini_service.py           # Gemini AI統合サービス
@@ -218,8 +213,8 @@ LOG_LEVEL=INFO
 #### 1. **標準インストール**
 ```bash
 # リポジトリクローン
-git clone [repository-url]
-cd sin_line_chat8-main
+git clone https://github.com/takenoko888/LineChatBot.git
+cd LineChatBot
 
 # 仮想環境作成
 python -m venv venv
@@ -268,18 +263,14 @@ git push heroku main
 
 ### 🎛️ 機能ON/OFF設定
 ```python
-# core/config_manager.py で設定
+# core/config_manager.py または config.json で設定
 features = {
     'weather': True,                    # 天気機能
     'search': True,                     # 検索機能
     'notifications': True,              # 通知機能
     'auto_tasks': True,                 # 自動実行機能
     'quick_reply': True,                # クイックリプライ
-    'performance_monitoring': True,     # パフォーマンス監視
-    'dynamic_features': True,           # 動的機能生成システム
-    'ambiguity_resolution': True,       # 曖昧性解消機能
-    'context_tracking': True,           # コンテキスト追跡
-    'enhanced_semantic_analysis': True  # 拡張意味解析
+    'performance_monitoring': True      # パフォーマンス監視
 }
 ```
 
@@ -304,17 +295,17 @@ tests/active -q
 tests/specific/test_auto_task_system.py -q
 
 # 新機能テスト
-python integration_test.py
-python test_dynamic_feature_system.py
-python test_enhanced_system.py
-python real_api_test.py
+python scripts/integration_test.py
+python scripts/test_dynamic_feature_system.py
+python scripts/test_enhanced_system.py
+python scripts/real_api_test.py
 
 # 包括的システムテスト
-python final_test.py
+python scripts/ultimate_system_test.py
 
 # 動的機能システム専用テスト
-python simple_test_dynamic_system.py
-python standalone_test.py
+python scripts/simple_test_dynamic_system.py
+python scripts/standalone_test.py
 ```
 
 ### 🧪 テスト構成
@@ -468,7 +459,7 @@ perf: パフォーマンス改善
 
 ## 📄 ライセンス
 
-MIT License - 詳細は LICENSE ファイルを参照してください。
+MIT License（本リポジトリに LICENSE を同梱）
 
 ---
 
